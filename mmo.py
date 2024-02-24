@@ -1,4 +1,4 @@
-from abc import ABC, abstractstaticmethod
+from abc import ABC, abstractstaticmethod, abstractmethod
 from generatorId import GenerarorID
 from point import Point
 
@@ -6,9 +6,9 @@ from point import Point
 
 class Classifier(ABC):
     def __init__(self, dataset: list[Point], zero_point: Point) -> None:
-        self._dataset = dataset[:]
-        self._data = None
-        self._zero_point = zero_point
+        self.dataset = dataset[:]
+        self.data = None
+        self.zero_point = zero_point
 
     @property
     def dataset(self):
@@ -175,15 +175,20 @@ class KMeans(Classifier):
 
 class Clusterizer(ABC):
     def __init__(self, points_dataset: list[Point]) -> None:
-        self._dataset = points_dataset[:]
-    
+        self.dataset = points_dataset[:]
 
-    def find_point(self, point_id: int) -> Point:
-        for point in self.__dataset:
-            if point.id_point == point_id:
-                return point
-            
-        return None
+    @property
+    def dataset(self):
+        return self._dataset
+    
+    @dataset.setter
+    def dataset(self, dataset):
+        self._dataset = dataset
+
+    @abstractmethod
+    def evalute():
+        pass
+        
 
 
 class SpektrAlgo(Clusterizer):
