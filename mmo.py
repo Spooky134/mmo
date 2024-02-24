@@ -1,4 +1,4 @@
-from abc import ABC, abstractstaticmethod, abstractmethod
+from abc import ABC, abstractmethod
 from generatorId import GenerarorID
 from point import Point
 
@@ -27,7 +27,7 @@ class Classifier(ABC):
     def zero_point(self, point):
         self._zero_point = point 
     
-    @abstractstaticmethod
+    @abstractmethod
     def evalute(self):
         pass
 
