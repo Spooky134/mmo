@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from copy import deepcopy
 from generatorId import GenerarorID
 from point import Point
 
@@ -6,13 +7,17 @@ from point import Point
 
 class Classifier(ABC):
     def __init__(self, dataset: list[Point], zero_point: Point) -> None:
-        self.dataset = dataset[:]
-        self.data = None
+        self.dataset = dataset
+        self._data = None
         self.zero_point = zero_point
 
     @property
     def dataset(self):
         return self._dataset
+    
+    @dataset.setter
+    def dataset(self, dataset):
+        self._dataset = deepcopy(dataset)
     
     @property
     def data(self):
