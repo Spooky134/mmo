@@ -215,9 +215,83 @@ class Clusterizer(ABC):
         pass
         
 
-
 class SpektrAlgo(Clusterizer):
-    pass
+    def __init__(self, dataset: list[Point], id_start_point: int=1, count_cluster: int=2) -> None:
+        super().__init__(deepcopy(dataset), count_cluster)
+        self.id_start_point = id_start_point
+    
+    @property
+    def id_start_point(self):
+        return self._id_start_point
+    
+    @id_start_point.setter
+    def id_start_point(self, id_start_point: int):
+        self._id_start_point = id_start_point
+    
+    
+    def evalute(self) -> None:
+        dataset = self.dataset[:]
+        start_point = self.__find_point_by_id(self.id_start_point)
+        dataset.remove(start_point)
+        points_que = [start_point]
+        differences = []
+        min_distances = []
+        clusters = []
+        
+        while len(dataset) != 0: 
+            buffer = dict()
+            for point in dataset:
+                buffer[point.id_point] = Point.distance_between_points(start_point, point)
+
+            id_near_point = min(buffer, key=lambda k: buffer[k])
+            min_distances.append(buffer[id_near_point])
+
+            near_point = self.__find_point_by_id(id_near_point)
+
+            points_que.append(near_point)
+            dataset.remove(near_point)
+
+            start_point = Point.mid_point(*points_que)
+
+        for i in range(1, len(min_distances)-1):
+            differences.append(min_distances[i] - min_distances[i-1])
+        
+        step_up_indexs = []
+        buf_diff = sorted(differences, reverse=True)
+        step_up_values = buf_diff[:self.count_cluster - 1]
+        for step_value in step_up_values:
+            step_up_indexs.append(differences.index(step_value))
+
+        step_up_indexs.sort()
+
+        intervals = [0, *step_up_indexs, len(points_que)]
+
+        for i in range(len(intervals)-1):
+            clusters.append(points_que[intervals[i]:intervals[i+1]])
+
+        for i, cluster in enumerate(clusters, start=1):
+            for point in cluster:
+                point.label = str(i)
+        points = sum(*clusters)
+        
+        print([point.id_point for point in points])
+    
+
+
+    def __find_point_by_id(self, id: int) -> Point:
+        left = 0
+        right = self.size - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+            if self.dataset[mid].id_point == id:
+                return self.dataset[mid]
+            elif self.dataset[mid].id_point < id:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        return -1
 
 
 class UnionAlgo(Clusterizer):
