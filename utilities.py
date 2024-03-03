@@ -104,4 +104,3 @@ class ParzenWindowSaveToExcel(SaveToExcel):
             self.custom_data_frame.add_column(f'{label}', [self.data['class_count'][label]])
 
         self.custom_data_frame.to_excel(file_path, index=False)
-

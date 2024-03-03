@@ -14,8 +14,6 @@ def main():
         point_list.append(Point(id_point=row.id,
                                 label=row.class_point,
                                 coords=(row.nodes,row.ends),))
-    
-
     # Классификация методом эталонов
     classifier = ReferenceMethod(zero_point=Point(coords=(5, 3)),
                                          dataset = point_list)
@@ -51,7 +49,9 @@ def main():
 
     g = ParzenWindowMethodGraphic(point_list, classifier.data)
     g.draw()
-  
+
+
+
     # # ex_d = WorkExcel('source/second_data.xlsx')
     # # point_list = []
     # # for row in ex_d.data_frame.itertuples(index=False):
