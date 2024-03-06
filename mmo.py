@@ -227,34 +227,32 @@ class SpektrAlgo(Clusterizer):
     @id_start_point.setter
     def id_start_point(self, id_start_point: int):
         self._id_start_point = id_start_point
-    
-    
+
     def evalute(self) -> None:
-        dataset = self.dataset[:]
+        self._data = {}
         start_point = self.__find_point_by_id(self.id_start_point)
-        dataset.remove(start_point)
+        dataset = [point for point in self.dataset if point != start_point]
         points_que = [start_point]
         differences = []
-        min_distances = []
-        clusters = []
+        distances = []
         
-        while len(dataset) != 0: 
-            buffer = dict()
+        while dataset:
+            min_dist = None
+            near_point = None 
             for point in dataset:
-                buffer[point.id_point] = Point.distance_between_points(start_point, point)
+                dist = Point.distance_between_points(start_point, point)
+                if min_dist is None or dist < min_dist :
+                    min_dist = dist
+                    near_point = point
 
-            id_near_point = min(buffer, key=lambda k: buffer[k])
-            min_distances.append(buffer[id_near_point])
-
-            near_point = self.__find_point_by_id(id_near_point)
-
+            distances.append(min_dist)
             points_que.append(near_point)
-            dataset.remove(near_point)
+            dataset = [point for point in self.dataset if point != near_point]
 
             start_point = Point.mid_point(*points_que)
 
-        for i in range(1, len(min_distances)-1):
-            differences.append(min_distances[i] - min_distances[i-1])
+        for i in range(1, len(distances)-1):
+            differences.append(distances[i] - distances[i-1])
         
         step_up_indexs = []
         buf_diff = sorted(differences, reverse=True)
@@ -265,18 +263,17 @@ class SpektrAlgo(Clusterizer):
         step_up_indexs.sort()
 
         intervals = [0, *step_up_indexs, len(points_que)]
-
-        for i in range(len(intervals)-1):
-            clusters.append(points_que[intervals[i]:intervals[i+1]])
-
-        for i, cluster in enumerate(clusters, start=1):
-            for point in cluster:
-                point.label = str(i)
-        points = sum(*clusters)
         
-        print([point.id_point for point in points])
-    
-
+        for i in range(len(intervals)-1):
+            for j in range(intervals[i], intervals[i+1]):
+                points_que[j].label = str(i+1)
+        
+        for point in points_que:
+            print(point.id_point, point.label)
+        
+        self._data['distances'] = distances
+        self._data['differences'] = differences
+        self._data['query'] = [point.id_point for point in points_que]
 
     def __find_point_by_id(self, id: int) -> Point:
         left = 0
