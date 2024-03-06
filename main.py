@@ -1,6 +1,6 @@
 from point import Point
 from utilities import ReferenceSaveToExcel, KMeansSaveToExcel, ParzenWindowSaveToExcel, ReadFromExcel
-from mmo import ReferenceMethod, KMeans, ParzenWindow
+from mmo import ReferenceMethod, KMeans, ParzenWindow, SpektrAlgo
 from graphics import ReferenceMethodGraphic, KMeansMethodGraphic, ParzenWindowMethodGraphic
 import pandas as pd
 
@@ -15,40 +15,43 @@ def main():
                                 label=row.class_point,
                                 coords=(row.nodes,row.ends),))
     # Классификация методом эталонов
-    classifier = ReferenceMethod(zero_point=Point(coords=(5, 3)),
-                                         dataset = point_list)
-    classifier.evalute()
+    # classifier = ReferenceMethod(zero_point=Point(coords=(5, 3)),
+    #                                      dataset = point_list)
+    # classifier.evalute()
 
-    # сохранение в excel
-    we = ReferenceSaveToExcel(classifier.data, re.custom_data_frame)
-    we.save('source/first_data_referernce_algo.xlsx')
+    # # сохранение в excel
+    # we = ReferenceSaveToExcel(classifier.data, re.custom_data_frame)
+    # we.save('source/first_data_referernce_algo.xlsx')
 
-    # отрисовка графика
-    g = ReferenceMethodGraphic(point_list, classifier.data)
-    g.draw()
-
-
+    # # отрисовка графика
+    # g = ReferenceMethodGraphic(point_list, classifier.data)
+    # g.draw()
+    
+    spk = SpektrAlgo(dataset=point_list, id_start_point=10, count_cluster=3)
+    spk.evalute()
+    print('----------------------------------------------------')
+    spk.evalute1()
 
     # # Классификация методом k-means
-    classifier = KMeans(k=5, zero_point=Point(coords=(5, 3)), dataset=point_list)
-    classifier.evalute()
+    # classifier = KMeans(k=5, zero_point=Point(coords=(5, 3)), dataset=point_list)
+    # classifier.evalute()
 
-    we = KMeansSaveToExcel(classifier.data, re.custom_data_frame)
-    we.save('source/first_data_kmeans_algo.xlsx')
+    # we = KMeansSaveToExcel(classifier.data, re.custom_data_frame)
+    # we.save('source/first_data_kmeans_algo.xlsx')
 
-    g = KMeansMethodGraphic(point_list, classifier.data)
-    g.draw()
+    # g = KMeansMethodGraphic(point_list, classifier.data)
+    # g.draw()
 
 
     # Классификация методом Парзентовского окна
-    classifier = ParzenWindow(radius=4, zero_point=Point(coords=(5, 6)), dataset=point_list)
-    classifier.evalute()
+    # classifier = ParzenWindow(radius=4, zero_point=Point(coords=(5, 6)), dataset=point_list)
+    # classifier.evalute()
     
-    we = ParzenWindowSaveToExcel(classifier.data, re.custom_data_frame)
-    we.save('source/first_data_parzen_algo.xlsx')
+    # we = ParzenWindowSaveToExcel(classifier.data, re.custom_data_frame)
+    # we.save('source/first_data_parzen_algo.xlsx')
 
-    g = ParzenWindowMethodGraphic(point_list, classifier.data)
-    g.draw()
+    # g = ParzenWindowMethodGraphic(point_list, classifier.data)
+    # g.draw()
 
 
 
