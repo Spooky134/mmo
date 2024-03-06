@@ -37,6 +37,17 @@ class Point():
 
         return f'{self.id_point} | {self.label} | {self.coords}'
     
+    def __eq__(self, value: object) -> bool:
+        if isinstance(value, Point):
+            return self.id_point == value.id_point \
+                and self.label == value.label \
+                and self.coords == value.coords
+        
+        return False
+
+    def __ne__(self, value: object) -> bool:
+        return not self.__eq__(value)
+    
     @property
     def line(self) -> tuple:
         
