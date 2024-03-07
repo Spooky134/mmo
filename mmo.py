@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 from generatorId import GenerarorID
 from point import Point
+import heapq
 
 
 
@@ -233,6 +234,7 @@ class SpektrAlgo(Clusterizer):
         start_point = self.__find_point_by_id(self.id_start_point)
         dataset = [point for point in self.dataset if point != start_point]
         points_que = [start_point]
+        start_points = [start_point]
         differences = []
         distances = []
         
@@ -247,19 +249,15 @@ class SpektrAlgo(Clusterizer):
 
             distances.append(min_dist)
             points_que.append(near_point)
-            dataset = [point for point in self.dataset if point != near_point]
+            dataset = [point for point in dataset if point != near_point]
 
             start_point = Point.mid_point(*points_que)
+            start_points.append(start_point)
 
-        for i in range(1, len(distances)-1):
-            differences.append(distances[i] - distances[i-1])
-        
-        step_up_indexs = []
-        buf_diff = sorted(differences, reverse=True)
-        step_up_values = buf_diff[:self.count_cluster - 1]
-        for step_value in step_up_values:
-            step_up_indexs.append(differences.index(step_value))
+        differences = [next_dist - prev_dist for prev_dist, next_dist in zip(distances[:-1], distances[1:])]
 
+        step_up_values = heapq.nlargest(self.count_cluster - 1, differences)
+        step_up_indexs = [differences.index(value) for value in step_up_values]
         step_up_indexs.sort()
 
         intervals = [0, *step_up_indexs, len(points_que)]
@@ -267,13 +265,15 @@ class SpektrAlgo(Clusterizer):
         for i in range(len(intervals)-1):
             for j in range(intervals[i], intervals[i+1]):
                 points_que[j].label = str(i+1)
-        
+
         for point in points_que:
             print(point.id_point, point.label)
-        
+
         self._data['distances'] = distances
         self._data['differences'] = differences
         self._data['query'] = [point.id_point for point in points_que]
+        self._data['count cluster'] = self.count_cluster
+        self._data['nodes point'] = start_points
 
     def __find_point_by_id(self, id: int) -> Point:
         left = 0
