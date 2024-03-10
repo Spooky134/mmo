@@ -183,7 +183,7 @@ class Clusterizer(ABC):
     def __init__(self, points_dataset: list[Point], count_cluster: int) -> None:
         self.dataset = points_dataset
         self.count_cluster = count_cluster
-        self._data=None
+        self._data=dict()
 
     @property
     def count_cluster(self):
@@ -230,7 +230,6 @@ class SpektrAlgo(Clusterizer):
         self._id_start_point = id_start_point
 
     def evalute(self) -> None:
-        self._data = {}
         start_point = self.__find_point_by_id(self.id_start_point)
         dataset = [point for point in self.dataset if point != start_point]
         points_que = [start_point]
