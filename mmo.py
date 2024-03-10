@@ -253,26 +253,26 @@ class SpektrAlgo(Clusterizer):
             start_point = Point.mid_point(*points_que)
             start_points.append(start_point)
 
-        differences = [next_dist - prev_dist for prev_dist, next_dist in zip(distances[:-1], distances[1:])]
+        differences = [abs(next_dist - prev_dist) for prev_dist, next_dist in zip(distances[:-1], distances[1:])]
 
         step_up_values = heapq.nlargest(self.count_cluster - 1, differences)
-        step_up_indexs = [differences.index(value) for value in step_up_values]
+        step_up_indexs = [differences.index(value)+1 for value in step_up_values]
         step_up_indexs.sort()
 
         intervals = [0, *step_up_indexs, len(points_que)]
         
+        labels = []
         for i in range(len(intervals)-1):
             for j in range(intervals[i], intervals[i+1]):
-                points_que[j].label = str(i+1)
+                # points_que[j].label = str(i+1)
+                labels.append(str(i+1))
 
-        for point in points_que:
-            print(point.id_point, point.label)
 
-        self._data['distances'] = distances
-        self._data['differences'] = differences
+        self._data['labels'] = labels
+        self._data['distances'] = ['-'] + distances
+        self._data['differences'] = ['-'] + differences
         self._data['query'] = [point.id_point for point in points_que]
-        self._data['count cluster'] = self.count_cluster
-        self._data['nodes point'] = start_points
+        self._data['count cluster'] = [self.count_cluster]
 
     def __find_point_by_id(self, id: int) -> Point:
         left = 0
