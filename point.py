@@ -67,6 +67,8 @@ class Point():
     
     @staticmethod
     def mid_point(*points):
+        if len(points)==1:
+            return point
         coords = [0] * len(points[0].coords)
         for point in points:
             for i, coord in enumerate(point.coords):
