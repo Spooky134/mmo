@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
-from point import Point
+from model.point import Point
 from matplotlib.patches import Circle
 from abc import ABC, abstractmethod
 

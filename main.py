@@ -1,8 +1,9 @@
-from point import Point
-from utilities import ReferenceSaveToExcel, KMeansSaveToExcel, ParzenWindowSaveToExcel, ReadFromExcel
-from mmo import ReferenceMethod, KMeans, ParzenWindow, SpektrAlgo
-from graphics import ReferenceMethodGraphic, KMeansMethodGraphic, ParzenWindowMethodGraphic
+from model.point import Point
+from utilities import ReferenceSaveToExcel, KMeansSaveToExcel, ParzenWindowSaveToExcel, ReadFromExcel, SpectrSaveToExcel, UnionSaveToExcel
+from visual.graphics import ReferenceMethodGraphic, KMeansMethodGraphic, ParzenWindowMethodGraphic
 import pandas as pd
+from clusterization.methods import SpektrAlgo, UnionAlgo, GraphAlgo
+from classification.methods import KMeans, ParzenWindow, ReferenceMethod
 
 
 
@@ -27,10 +28,18 @@ def main():
     # g = ReferenceMethodGraphic(point_list, classifier.data)
     # g.draw()
     
-    spk = SpektrAlgo(dataset=point_list, id_start_point=10, count_cluster=3)
-    spk.evalute()
-    print('----------------------------------------------------')
-    spk.evalute1()
+    # Алгоритм кластеризации спектр
+    # spk = SpektrAlgo(dataset=point_list, id_start_point=10, count_cluster=3)
+    # spk.evalute()
+
+    # we = SpectrSaveToExcel(spk.data, re.custom_data_frame)
+    # we.save('source/spectr.xlsx')
+
+    uni = UnionAlgo(dataset=point_list, count_cluster=3)
+    uni.evalute()
+
+    we = UnionSaveToExcel(uni.data, re.custom_data_frame)
+    we.save('source/union.xlsx')
 
     # # Классификация методом k-means
     # classifier = KMeans(k=5, zero_point=Point(coords=(5, 3)), dataset=point_list)
