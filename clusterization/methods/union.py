@@ -1,11 +1,10 @@
-from copy import deepcopy
 from clusterization.methods.clusterizer import Clusterizer
 from model.point import Point
 
 
 class UnionAlgo(Clusterizer):
     def __init__(self, dataset: list[Point], count_cluster: int=2) -> None:
-        super().__init__(deepcopy(dataset), count_cluster)
+        super().__init__(dataset, count_cluster)
     
     def evalute(self) -> None:
         steps = []

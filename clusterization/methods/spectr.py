@@ -1,11 +1,10 @@
-from copy import deepcopy
 from clusterization.methods.clusterizer import Clusterizer
 from model.point import Point
 import heapq
 
 class SpektrAlgo(Clusterizer):
     def __init__(self, dataset: list[Point], id_start_point: int=1, count_cluster: int=2) -> None:
-        super().__init__(deepcopy(dataset), count_cluster)
+        super().__init__(dataset, count_cluster)
         self.id_start_point = id_start_point
     
     @property
