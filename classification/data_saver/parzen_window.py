@@ -1,5 +1,6 @@
 from excel_worker.custom_data_frame import CustomDataFrame
 from excel_worker.excel_worker import SaveToExcel
+
 class ParzenWindowSaveToExcel(SaveToExcel):
     def __init__(self, data: dict, custom_data_frame: CustomDataFrame=None) -> None:
         super().__init__(data, custom_data_frame)

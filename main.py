@@ -1,9 +1,15 @@
+from clusterization.graph import GraphAlgo
+from clusterization.spectr import SpektrAlgo
+from clusterization.union import UnionAlgo
+from classification.k_means import KMeans
+from classification.parzen_window import ParzenWindow
+from classification.standard import Standard
 from model.point import Point
-from utilities import ReferenceSaveToExcel, KMeansSaveToExcel, ParzenWindowSaveToExcel, ReadFromExcel, SpectrSaveToExcel, UnionSaveToExcel
+from excel_worker.excel_worker import ReadFromExcel
+from data_saver.union import UnionSaveToExcel
 from visual.graphics import ReferenceMethodGraphic, KMeansMethodGraphic, ParzenWindowMethodGraphic
 import pandas as pd
-from clusterization.methods import SpektrAlgo, UnionAlgo, GraphAlgo
-from classification.methods import KMeans, ParzenWindow, ReferenceMethod
+
 
 
 
@@ -16,7 +22,7 @@ def main():
                                 label=row.class_point,
                                 coords=(row.nodes,row.ends),))
     # Классификация методом эталонов
-    # classifier = ReferenceMethod(zero_point=Point(coords=(5, 3)),
+    # classifier = Standard(zero_point=Point(coords=(5, 3)),
     #                                      dataset = point_list)
     # classifier.evalute()
 

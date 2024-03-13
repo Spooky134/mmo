@@ -1,4 +1,4 @@
-from clusterization.clusterizer import Clusterizer
+from clusterization.methods.clusterizer import Clusterizer
 from model.point import Point
 import networkx as nx
 

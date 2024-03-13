@@ -1,4 +1,4 @@
-from classification.classifier import Classifier
+from classification.methods.classifier import Classifier
 from model.point import Point
 from utils.generatorId import GenerarorID
 
