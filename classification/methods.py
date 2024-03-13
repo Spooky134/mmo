@@ -59,7 +59,7 @@ class Classifier(ABC):
         return groups
     
 
-class ReferenceMethod(Classifier):
+class Standard(Classifier):
     def __init__(self, zero_point: Point, dataset: list[Point]) -> None:
         super().__init__(dataset, zero_point)
 
