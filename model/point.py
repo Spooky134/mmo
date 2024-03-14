@@ -48,6 +48,9 @@ class Point():
     def __ne__(self, value: object) -> bool:
         return not self.__eq__(value)
     
+    def __hash__(self) -> int:
+        return hash((self.id_point, self.label, *self.coords))
+    
     @property
     def line(self) -> tuple:
         
