@@ -4,6 +4,7 @@ from utils.generatorId import GenerarorID
 
 
 class KMeans(Classifier):
+    # вынести zeropoint из конструктора и закинуть в метод вычесления
     def __init__(self, dataset: list[Point], zero_point: Point, k: int=3) -> None:
         super().__init__(dataset, zero_point)
         self.__k = k
@@ -46,3 +47,6 @@ class KMeans(Classifier):
         self._data['k_means'] = [el[0] for el in k_means]
         self._data['distances'] = [el[1] for el in k_means]
         self._data['class_count'] =  class_count
+
+
+# сохранение обьекта происходит с помощью создания класса сохранения типо датафрейма или датафрейма есть базовый класс котороый можно сохранять классом для сохранения

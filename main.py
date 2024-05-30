@@ -1,16 +1,21 @@
-from clusterization.graph import GraphAlgo
-from clusterization.spectr import SpektrAlgo
-from clusterization.union import UnionAlgo
-from classification.k_means import KMeans
-from classification.parzen_window import ParzenWindow
-from classification.standard import Standard
+from clusterization.methods.graph import GraphAlgo
+from clusterization.methods.spectr import SpektrAlgo
+from clusterization.methods.union import UnionAlgo
+from clusterization.data_saver.graph import GraphSaveToExcel
+from clusterization.data_saver.spectr import SpectrSaveToExcel
+from clusterization.data_saver.union import UnionSaveToExcel
+
+from classification.methods.k_means import KMeans
+from classification.methods.parzen_window import ParzenWindow
+from classification.methods.standard import Standard
+from classification.data_saver.k_means import KMeansSaveToExcel
+from classification.data_saver.parzen_window import ParzenWindowSaveToExcel
+from classification.data_saver.standard import StandardSaveToExcel
+
 from model.point import Point
 from excel_worker.excel_worker import ReadFromExcel
-from data_saver.union import UnionSaveToExcel
 from visual.graphics import ReferenceMethodGraphic, KMeansMethodGraphic, ParzenWindowMethodGraphic
 import pandas as pd
-
-
 
 
 def main():
@@ -21,6 +26,13 @@ def main():
         point_list.append(Point(id_point=row.id,
                                 label=row.class_point,
                                 coords=(row.nodes,row.ends),))
+        
+
+    g = GraphAlgo(points_dataset=point_list, count_cluster=3)
+    g.evalute()
+
+
+
     # Классификация методом эталонов
     # classifier = Standard(zero_point=Point(coords=(5, 3)),
     #                                      dataset = point_list)
@@ -41,11 +53,11 @@ def main():
     # we = SpectrSaveToExcel(spk.data, re.custom_data_frame)
     # we.save('source/spectr.xlsx')
 
-    uni = UnionAlgo(dataset=point_list, count_cluster=3)
-    uni.evalute()
+    # uni = UnionAlgo(dataset=point_list, count_cluster=3)
+    # uni.evalute()
 
-    we = UnionSaveToExcel(uni.data, re.custom_data_frame)
-    we.save('source/union.xlsx')
+    # we = UnionSaveToExcel(uni.data, re.custom_data_frame)
+    # we.save('source/union.xlsx')
 
     # # Классификация методом k-means
     # classifier = KMeans(k=5, zero_point=Point(coords=(5, 3)), dataset=point_list)
